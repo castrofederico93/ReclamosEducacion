@@ -1,0 +1,255 @@
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+
+<script>
+  document.getElementById("radio_entradaAct").addEventListener("click",seleccionRadio);
+  document.getElementById("radio_entradaNueva").addEventListener("click",seleccionRadio);
+  document.getElementById("temaPrincipal").addEventListener("change",seleccionTemaPr);
+  document.getElementById("tema").addEventListener("change",seleccionTema);
+  document.getElementById("subTema1").addEventListener("change",seleccionSubTema);
+  document.getElementById("consultaEscAfirmativa").addEventListener("click",seleccionRadioEsc);
+  document.getElementById("consultaEscNegativa").addEventListener("click",seleccionRadioEsc);
+  document.getElementById("distritoEscolar").addEventListener("change",seleccionEsc);
+  document.getElementById("nivelEscolar").addEventListener("change",seleccionEsc);
+  document.getElementById("seleccionEscuela").addEventListener("change",habilitarForm);
+
+  function seleccionRadio(){
+    if (this.name == "radio_entradaNueva"){
+      document.getElementById("entradaAct").hidden = true;
+      document.getElementById("entradaNueva").hidden = false;
+      document.getElementById("radio_entradaAct").checked = false;
+    } else {
+      document.getElementById("entradaAct").hidden = false;
+      document.getElementById("entradaNueva").hidden = true;
+      document.getElementById("radio_entradaNueva").checked = false;
+      sinOpcionesTema();
+    }
+  }
+
+  function seleccionTemaPr(){
+    google.script.run
+    .withSuccessHandler(opcionesTema)
+    .withFailureHandler(sinOpcionesTema)
+    .seleccionTema(this.value);
+  }
+
+  function opcionesTema(valor){
+    let select = document.getElementById("tema");
+    select.disabled = false;
+    select.options.length = 0;
+    let opcion0 = document.createElement("option");
+    opcion0.innerHTML = "Seleccione un tema";
+    opcion0.selected = true;
+    opcion0.disabled = true;
+    select.appendChild(opcion0);
+    valor.forEach(elemento=>{
+      let option = document.createElement("option");
+      option.value = elemento;
+      option.innerHTML = elemento;
+      select.appendChild(option);
+    });
+    sinOpcionesSubTema();
+    sinOpcionesSubTema2();
+  }
+
+  function sinOpcionesTema(){
+    let select = document.getElementById("tema");
+    select.disabled = true;
+    select.options.length = 0;
+    let opcion0 = document.createElement("option");
+    opcion0.innerHTML = "Seleccione un tema";
+    opcion0.selected = true;
+    opcion0.disabled = true;
+    select.appendChild(opcion0);
+    sinOpcionesSubTema();
+    sinOpcionesSubTema2();
+  }
+
+  function seleccionTema(){
+    valor = document.getElementById("temaPrincipal").value;
+    google.script.run
+    .withSuccessHandler(opcionesSubTema)
+    .withFailureHandler(sinOpcionesSubTema)
+    .seleccionTema(valor+'-'+this.value);
+  }
+
+  function opcionesSubTema(valor){
+    let select = document.getElementById("subTema1");
+    select.disabled = false;
+    select.options.length = 0;
+    let opcion0 = document.createElement("option");
+    opcion0.innerHTML = "Seleccione un tema";
+    opcion0.selected = true;
+    opcion0.disabled = true;
+    select.appendChild(opcion0);
+    valor.forEach(elemento=>{
+      let option = document.createElement("option");
+      option.value = elemento;
+      option.innerHTML = elemento;
+      select.appendChild(option);
+    });
+    sinOpcionesSubTema2();
+  }
+
+  function sinOpcionesSubTema(){
+    let select1 = document.getElementById("subTema1");
+    select1.disabled = true;
+    select1.options.length = 0;
+    let opcion1 = document.createElement("option");
+    opcion1.innerHTML = "Seleccione un tema";
+    opcion1.selected = true;
+    opcion1.disabled = true;
+    select1.appendChild(opcion1);
+    sinOpcionesSubTema2();
+  }
+
+  function seleccionSubTema(){
+    valor = document.getElementById("temaPrincipal").value;
+    valor1 = document.getElementById("tema").value;
+    google.script.run
+    .withSuccessHandler(opcionesSubTema2)
+    .withFailureHandler(sinOpcionesSubTema2)
+    .seleccionTema(valor+'-'+valor1+'-'+this.value);
+  }
+
+  function opcionesSubTema2(valor){
+    let select = document.getElementById("subTema2");
+    select.disabled = false;
+    select.options.length = 0;
+    let opcion0 = document.createElement("option");
+    opcion0.innerHTML = "Seleccione un tema";
+    opcion0.selected = true;
+    opcion0.disabled = true;
+    select.appendChild(opcion0);
+    valor.forEach(elemento=>{
+      let option = document.createElement("option");
+      option.value = elemento;
+      option.innerHTML = elemento;
+      select.appendChild(option);
+    });
+  }
+
+  function sinOpcionesSubTema2(){
+    let select1 = document.getElementById("subTema2");
+    select1.disabled = true;
+    select1.options.length = 0;
+    let opcion1 = document.createElement("option");
+    opcion1.innerHTML = "Seleccione un tema";
+    opcion1.selected = true;
+    opcion1.disabled = true;
+    select1.appendChild(opcion1);
+  }
+
+  function seleccionRadioEsc(){
+    if (this.name == "consultaEscAfirmativa"){
+      document.getElementById("baseEscuelas").hidden = false;
+      document.getElementById("consultaEscNegativa").checked = false;
+      document.getElementById("carga").hidden = true;
+    } else {
+      document.getElementById("baseEscuelas").hidden = true;
+      document.getElementById("consultaEscAfirmativa").checked = false;
+      consultaEscuelaBlanco();
+      console.log("negativo");
+      habilitarForm();
+    }
+  }
+
+  function seleccionEsc(){
+    let distrito = document.getElementById("distritoEscolar").value;
+    let nivel = document.getElementById("nivelEscolar").value;
+
+    if (distrito != "Seleccione un valor" && nivel != "Seleccione un valor"){
+      google.script.run
+      .withSuccessHandler(devolverEscuelas)
+      .buscarEscuelas(nivel,distrito);
+    }
+  }
+
+  function devolverEscuelas(lista){
+    let select = document.getElementById("seleccionEscuela");
+    select.disabled = false;
+    select.options.length = 0;
+    let opcion1 = document.createElement("option");
+    opcion1.innerHTML = "Seleccione la escuela";
+    opcion1.selected = true;
+    opcion1.disabled = true;
+    select.appendChild(opcion1);
+    lista.forEach(elemento=>{
+      let option = document.createElement("option");
+      option.value = elemento;
+      option.innerHTML = elemento;
+      select.appendChild(option);
+    });
+  }
+
+  function consultaEscuelaBlanco(){
+    let select = document.getElementById("seleccionEscuela");
+    select.disabled = true;
+    select.options.length = 0;
+    let opcion = document.createElement("option");
+    opcion.innerHTML = "Seleccione la escuela";
+    opcion.selected = true;
+    opcion.disabled = true;
+    select.appendChild(opcion);
+    
+    select = document.getElementById("distritoEscolar");
+    select.options.length = 0;
+    opcion = document.createElement("option");
+    opcion.innerHTML = "Seleccione un valor";
+    opcion.selected = true;
+    opcion.disabled = true;
+    select.appendChild(opcion);
+    var distrito = [];
+    for (i=1;i<=21;i++){
+      distrito.push(i);
+    }
+    distrito.forEach(dist=>{
+      let option = document.createElement("option");
+      option.innerHTML = dist;
+      option.value = dist;
+      select.appendChild(option);
+    });
+
+    select = document.getElementById("nivelEscolar");
+    select.options.length = 0;
+    opcion = document.createElement("option");
+    opcion.innerHTML = "Seleccione un valor";
+    opcion.selected = true;
+    opcion.disabled = true;
+    select.appendChild(opcion);
+    var nivel = ["Inicial","Primaria","Media","Técnica","Especial"];
+    nivel.forEach(niv=>{
+      let option = document.createElement("option");
+      option.innerHTML = niv;
+      option.value = niv;
+      select.appendChild(option);
+    });
+    document.getElementById("carga").hidden = true;
+  }
+
+  function habilitarForm(){
+    document.getElementById("carga").hidden = false;
+  }
+</script>

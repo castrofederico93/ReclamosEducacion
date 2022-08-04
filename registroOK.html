@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!=include("CSS");?>
+    <script>
+      function recargarPagina(){
+        var url = document.getElementById("url").value;
+        var link = document.createElement('a');
+        link.href = url;
+        link.id = 'linkURL';
+        document.body.appendChild(link);
+        document.getElementById("linkURL").click();  
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="mb-4">Registro completado exitosamente</h2></br>
+      <h4 class="mb-4">Haga clic en el botón para enviar otro formulario.</h4>
+      <?var url = getScriptUrl();?><input type="hidden" value="<?= url ?>" id="url" />
+        <input class="btn btn-secondary" type="button" value="Recargar" onclick="recargarPagina()"/>
+    </div>
+  </body>
+</html>

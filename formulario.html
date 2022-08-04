@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+  <?!=include("CSS");?>
+</head>
+
+<body>
+
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Tablero de Gestión</h1>
+    <div id="consultaEntrada">
+      <div class="form-check">
+        <input type="radio" class="form-check-input" id="radio_entradaAct" name="radio_entradaAct">
+        <label class="form-check-label" for="radio_entradaAct">Actualización</label>
+      </div>
+      <div class="form-check mb-3">
+        <input type="radio" class="form-check-input" id="radio_entradaNueva" name="radio_entradaNueva">
+        <label class="form-check-label" for="radio_entradaNueva">Nuevo</label>
+      </div>
+    </div>
+
+    <form class="form-group needs-validation" id="entradaAct" name="entradaAct" method="post" action="<?= pubUrl ?>" hidden novalidate>
+      <div class="mb-3">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="mb-2" for="codigoSeguimiento">Ingrese el código de seguimiento</label>
+                <input class="form-control mb-3" type="text" id="codigoSeguimiento" name="codigoSeguimiento" placeholder="Código" required>
+              </div>
+              <div class="col-md-6">
+                <label class="mb-2" for="fechaEstimada">¿Tiene fecha estimada de solución?</label>
+                <input class="form-control mb-3" type="date" id="fechaEstimada" name="fechaEstimada">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <label class="mb-2" for="detalle">Detalle</label>
+                <textarea class="form-control" placeholder="Detalle de actualización" rows="2" id="detalle" name="detalle" required></textarea>
+              </div>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="En proceso" name="estado" id="enProceso" required>
+              <label class="form-check-label" for="enProceso">En proceso</label>
+            </div>
+            <div class="form-check" required>
+              <input class="form-check-input" type="radio" value="Finalizado" name="estado" id="finalizado">
+              <label class="form-check-label" for="finalizado">Finalizado</label>
+            </div>
+            <button class="btn btn-warning mt-3" type="submit">Enviar</button>
+          </div>
+          <div class="col-md-6">
+            <table class="table table-hover table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th>Tema</th>
+                  <th>Código</th>
+                  <th>Estado</th>
+                  <th>Pedido por</th>
+                </tr>
+              </thead>
+              <tbody>
+                <? baseReclamos.forEach(fila => { ?>
+                <tr>
+                  <td><?= fila[encabezados.indexOf("Tema principal")] ?></td>
+                  <td><?= fila[encabezados.indexOf("Código de seguimiento")] ?></td>
+                  <td><?= fila[encabezados.indexOf("Estado de agenda")] ?></td>
+                  <td><?= fila[encabezados.indexOf("Quien lo pide")] ?></td>
+                </tr>
+                <? }) ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <form class="form-group needs-validation" id="entradaNueva" name="entradaNueva" method="post" action="<?= pubUrl ?>" hidden novalidate>
+      <div id="consultaEscuela">
+        <label class="mb-2" for="consultaEscuela">¿La carga es para una escuela?</label>
+        <div class="form-check">
+          <label class="form-check-label" for="consultaEscAfirmativa">Sí</label>
+          <input type="radio" class="form-check-input" id="consultaEscAfirmativa" name="consultaEscAfirmativa">
+        </div>
+        <div class="form-check mb-3">
+          <label class="form-check-label" for="consultaEscNegativa">No</label>
+          <input type="radio" class="form-check-input" id="consultaEscNegativa" name="consultaEscNegativa">
+        </div>
+      </div>
+
+      <div id="baseEscuelas" hidden>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="nivelEscolar" class="mb-2">Nivel Escolar</label>
+            <select class="form-select mb-3" id="nivelEscolar" name="nivelEscolar">
+                  <option selected disabled>Seleccione un valor</option>
+                  <option value="Inicial">Inicial</option>
+                  <option value="Primaria">Primaria</option>
+                  <option value="Media">Media</option>
+                  <option value="Técnica">Técnica</option>
+                  <option value="Especial">Especial</option>
+                </select>
+          </div>
+
+          <div class="col-md-6">
+            <label for="distritoEscolar" class="mb-2">Distrito Escolar</label>
+            <select class="form-select mb-3" id="distritoEscolar" name="distritoEscolar">
+                  <option selected disabled>Seleccione un valor</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                </select>
+          </div>
+          <div class="col-md-12">
+            <label for="seleccionEscuela" class="mb-2">Escuela</label>
+            <select class="form-select mb-3" id="seleccionEscuela" name="seleccionEscuela" disabled>
+                <option selected disabled>Seleccione la escuela</option>
+              </select>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div id="carga" hidden>
+        <div class="row">
+          <div class="col">
+            <label class="mb-2" for="temaPrincipal">Tema principal</label>
+            <select class="form-select mb-3" id="temaPrincipal" name="temaPrincipal" required>
+                <option selected disabled>Seleccione un tema</option>
+                <? temasPrincipales.forEach(tema=>{ ?>
+                <option value="<?= tema ?>"><?= tema ?></option>
+                <? }) ?>
+              </select>
+          </div>
+
+          <div class="col" id="colTema">
+            <label class="mb-2" for="tema">Tema</label>
+            <select class="form-select mb-3" id="tema" name="tema" disabled required>
+                <option selected disabled>Seleccione un tema</option>
+              </select>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col" id="colSubTema1">
+            <label class="mb-2" for="subTema1">Sub-tema 1</label>
+            <select class="form-select mb-3" id="subTema1" name="subTema1" disabled required>
+                <option selected disabled>Seleccione un tema</option>
+              </select>
+          </div>
+
+          <div class="col">
+            <label class="mb-2" for="subTema2">Sub-tema 2</label>
+            <select class="form-select mb-3" id="subTema2" name="subTema2" disabled required>
+                <option selected disabled>Seleccione un tema</option>
+              </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="mb-2" for="detalle">Detalle</label>
+            <textarea class="form-control" placeholder="Detalle de carga" rows="2" id="detalle" name="detalle" required></textarea>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="mb-2" for="nombrePedido">¿Quién hace el pedido?</label>
+            <input class="form-control" id="nombrePedido" name="nombrePedido" type="text" placeholder="Nombre y Apellido" required>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="mb-2" for="fechaEstimada">¿Tiene fecha estimada de solución?</label>
+            <input class="form-control" type="date" id="fechaEstimada" name="fechaEstimada">
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-warning" type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <?!=include("JS");?>
+</body>
+
+</html>
